@@ -1,0 +1,9 @@
+C:\Users\muratgtvb\Desktop\desktop\code\projects\SavedLauncher\SavedLauncher\bin\Debug\SavedLauncher.exe.config
+C:\Users\muratgtvb\Desktop\desktop\code\projects\SavedLauncher\SavedLauncher\bin\Debug\SavedLauncher.exe
+C:\Users\muratgtvb\Desktop\desktop\code\projects\SavedLauncher\SavedLauncher\bin\Debug\SavedLauncher.pdb
+C:\Users\muratgtvb\Desktop\desktop\code\projects\SavedLauncher\SavedLauncher\obj\Debug\SavedLauncher.csprojResolveAssemblyReference.cache
+C:\Users\muratgtvb\Desktop\desktop\code\projects\SavedLauncher\SavedLauncher\obj\Debug\SavedLauncher.Form1.resources
+C:\Users\muratgtvb\Desktop\desktop\code\projects\SavedLauncher\SavedLauncher\obj\Debug\SavedLauncher.Properties.Resources.resources
+C:\Users\muratgtvb\Desktop\desktop\code\projects\SavedLauncher\SavedLauncher\obj\Debug\SavedLauncher.csproj.GenerateResource.Cache
+C:\Users\muratgtvb\Desktop\desktop\code\projects\SavedLauncher\SavedLauncher\obj\Debug\SavedLauncher.exe
+C:\Users\muratgtvb\Desktop\desktop\code\projects\SavedLauncher\SavedLauncher\obj\Debug\SavedLauncher.pdb
