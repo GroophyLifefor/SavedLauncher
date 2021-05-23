@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Diagnostics;
 
 namespace SavedLauncher
 {
@@ -20,9 +21,12 @@ namespace SavedLauncher
 
         public static string save;
         public static string ip="127.0.0.1";
-        //https://www.c-sharpcorner.com/article/working-with-json-in-C-Sharp/
+        public static string server = "none";
+        
         private void Form1_Load(object sender, EventArgs e)
         {
+            Directory.CreateDirectory("SaveDatas");
+            selectlist.SelectedIndex = selectlist.FindStringExact("RealGT,127.0.0.1");
             StreamReader sr = new StreamReader(@"C:\Windows\System32\Drivers\etc\hosts");
             string hts = sr.ReadToEnd();
             sr.Close();
@@ -55,7 +59,6 @@ namespace SavedLauncher
             foreach (string word in words)
             {
                 selectlist.Items.Add(word);
-                richTextBox1.Text += word + Environment.NewLine;
             }
             
         }
@@ -126,6 +129,42 @@ namespace SavedLauncher
                 make.Close();
                 MessageBox.Show("error fixed open again");
                 Application.Exit();
+            }
+            try
+            {
+                servername();
+                File.Delete(@"C:\\Users\\" + Environment.UserName + "\\AppData\\Local\\Growtopia\\save.dat");
+                //File.Move(Environment.CurrentDirectory + "\\SaveDatas\\" + server, @"C:\\Users\\" + Environment.UserName + "\\AppData\\Local\\Growtopia\\save.dat");
+                File.Copy(Environment.CurrentDirectory + "\\SaveDatas\\" + server, @"C:\\Users\\" + Environment.UserName + "\\AppData\\Local\\Growtopia\\save.dat");
+                MessageBox.Show("Save dat changed");
+                try
+                {
+                    var process = Process.GetProcessesByName("Growtopia")[0];
+                    process.Kill();
+                    var path = @"C:\\Users\\" + Environment.UserName + "\\AppData\\Local\\Growtopia\\Growtopia.exe";
+                    Process.Start(path);
+                }
+                catch
+                {
+
+                }
+            }
+            catch
+            {
+                try
+                {
+                    File.Delete(@"C:\\Users\\" + Environment.UserName + "\\AppData\\Local\\Growtopia\\save.dat");
+                    var process = Process.GetProcessesByName("Growtopia")[0];
+                    process.Kill();
+                    var path = @"C:\\Users\\" + Environment.UserName + "\\AppData\\Local\\Growtopia\\Growtopia.exe";
+                    Process.Start(path);
+                    MessageBox.Show("sorry for deleted save.dat I only save ur account informations");
+                    //I save ur acconts to private servers ;D
+                }
+                catch
+                {
+
+                }
             }
         }
 
@@ -226,6 +265,46 @@ namespace SavedLauncher
             Application.Restart();
         }
 
+        private void button2_Click(object sender, EventArgs e)
+        {
+            //C:\Users\muratgtvb\AppData\Local\Growtopia
+            servername();
+            try
+            {
+                File.Move(@"C:\\Users\\" + Environment.UserName + "\\AppData\\Local\\Growtopia\\save.dat", Environment.CurrentDirectory + "\\SaveDatas\\" + server);
+                MessageBox.Show("Succesful but I mean you don't forget the save save.dat / if you try join realgt with anyone name, pass game save ur save.dat");
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show("error: "+error.Message);
+            }
+            
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+           
+        }
+
+        private void servername()
+        {
+            string chooseds = selectlist.SelectedItem.ToString();
+            string[] changer = chooseds.Split(',');
+
+            foreach (string word in changer)
+            {
+                server = word;
+                return;
+            }
+            
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://github.com/Groophy-Lifefor/SavedLauncher");
+        }
+
 
     }
+    
 }
