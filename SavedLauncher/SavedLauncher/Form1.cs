@@ -188,12 +188,16 @@ namespace SavedLauncher
                 return;
             }
             string nips = ips.Replace(".", string.Empty);
-            if (!System.Text.RegularExpressions.Regex.IsMatch(nips, "[^0-9]"))
+            try
+            {
+                int.Parse(nips);
+                
+            }
+            catch (Exception)
             {
                 MessageBox.Show("Somethings gone wrong by ip please rewrite with like 123.123.123.123");
                 return;
             }
-
             string now;
             StreamReader saved = new StreamReader("saved.txt");
             now = saved.ReadToEnd();
