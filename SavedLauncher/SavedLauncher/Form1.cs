@@ -22,9 +22,13 @@ namespace SavedLauncher
         public static string save;
         public static string ip="127.0.0.1";
         public static string server = "none";
-        
+        public static bool logopen = false;
+        //349; 330
+        //580; 330
+        //weidth
         private void Form1_Load(object sender, EventArgs e)
         {
+            logadd("SavedLauncher Opened");
             Directory.CreateDirectory("SaveDatas");
             selectlist.SelectedIndex = selectlist.FindStringExact("RealGT,127.0.0.1");
             StreamReader sr = new StreamReader(@"C:\Windows\System32\Drivers\etc\hosts");
@@ -60,7 +64,7 @@ namespace SavedLauncher
             {
                 selectlist.Items.Add(word);
             }
-            
+            logadd("SavedLauncher Open load done");
         }
 
         private void newadd_Click(object sender, EventArgs e)
@@ -68,15 +72,19 @@ namespace SavedLauncher
             newaddname.Visible = true;
             newaddip.Visible = true;
             addnow.Visible = true;
+            logadd("new data button clicked");
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
+            logadd("SavedLauncher Closing");
             Application.Exit();
+
         }
 
         private void con_Click(object sender, EventArgs e)
         {
+            
             string chooseds = selectlist.SelectedItem.ToString();
             if (selectlist.SelectedItem != null)
             {
@@ -102,7 +110,7 @@ namespace SavedLauncher
                 StreamWriter sws = new StreamWriter(@"C:\Windows\System32\Drivers\etc\hosts");
                 sws.Write(ip+ " growtopia1.com" + Environment.NewLine +ip+ " growtopia2.com");
                 sws.Close();
-                
+                logadd("connecting to " + ip);
             }
             StreamReader sr = new StreamReader(@"C:\Windows\System32\Drivers\etc\hosts");
             string hts = sr.ReadToEnd();
@@ -136,13 +144,24 @@ namespace SavedLauncher
                 File.Delete(@"C:\\Users\\" + Environment.UserName + "\\AppData\\Local\\Growtopia\\save.dat");
                 //File.Move(Environment.CurrentDirectory + "\\SaveDatas\\" + server, @"C:\\Users\\" + Environment.UserName + "\\AppData\\Local\\Growtopia\\save.dat");
                 File.Copy(Environment.CurrentDirectory + "\\SaveDatas\\" + server, @"C:\\Users\\" + Environment.UserName + "\\AppData\\Local\\Growtopia\\save.dat");
+                logadd("Save dat secured");
                 MessageBox.Show("Save dat changed");
+
                 try
                 {
-                    var process = Process.GetProcessesByName("Growtopia")[0];
-                    process.Kill();
+                    try
+                    {
+                        var process = Process.GetProcessesByName("Growtopia")[0];
+                        process.Kill();
+                        logadd("Growtopia closed");
+                    }
+                    catch
+                    {
+
+                    }
                     var path = @"C:\\Users\\" + Environment.UserName + "\\AppData\\Local\\Growtopia\\Growtopia.exe";
                     Process.Start(path);
+                    logadd("Growtopia reopened");
                 }
                 catch
                 {
@@ -154,10 +173,19 @@ namespace SavedLauncher
                 try
                 {
                     File.Delete(@"C:\\Users\\" + Environment.UserName + "\\AppData\\Local\\Growtopia\\save.dat");
-                    var process = Process.GetProcessesByName("Growtopia")[0];
-                    process.Kill();
+                    try
+                    {
+                        var process = Process.GetProcessesByName("Growtopia")[0];
+                        process.Kill();
+                        logadd("Growtopia closed");
+                    }
+                    catch (Exception eps)
+                    {
+
+                    }
                     var path = @"C:\\Users\\" + Environment.UserName + "\\AppData\\Local\\Growtopia\\Growtopia.exe";
                     Process.Start(path);
+                    logadd("growtopia reopened");
                     MessageBox.Show("sorry for deleted save.dat I only save ur account informations");
                     //I save ur acconts to private servers ;D
                 }
@@ -196,6 +224,7 @@ namespace SavedLauncher
                 MessageBox.Show("error fixed open again");
                 Application.Exit();
             }
+            logadd("Restart Done");
         }
 
         private void uncon_Click(object sender, EventArgs e)
@@ -215,15 +244,18 @@ namespace SavedLauncher
                 stat.Text = "Status: RealGT";
             }
             label1.Text = Environment.NewLine + hts;
+            logadd("Unconnected");
         }
 
         private void addnow_Click(object sender, EventArgs e)
         {
             string names=newaddname.Text;
             string ips = newaddip.Text;
+            logadd("Try to add new data");
             if (names.Contains(";") || names.Contains(","))
             {
                 MessageBox.Show("you can't use ; and , for name");
+                logadd("Add data failed: you can't use ; and , for name");
                 return;
             }
             string nips = ips.Replace(".", string.Empty);
@@ -235,6 +267,7 @@ namespace SavedLauncher
             catch (Exception)
             {
                 MessageBox.Show("Somethings gone wrong by ip please rewrite with like 123.123.123.123");
+                logadd("add data failed: Somethings gone wrong by ip please rewrite with like 123.123.123.123");
                 return;
             }
             string now;
@@ -245,7 +278,7 @@ namespace SavedLauncher
             StreamWriter ns = new StreamWriter("saved.txt");
             ns.Write(now + ";" + newaddname.Text + "," + newaddip.Text);
             ns.Close();
-
+            logadd("new data added");
             Application.Restart();
         }
 
@@ -262,7 +295,9 @@ namespace SavedLauncher
             StreamWriter ns = new StreamWriter("saved.txt");
             ns.Write(now);
             ns.Close();
+            logadd("Data removed");
             Application.Restart();
+
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -278,7 +313,7 @@ namespace SavedLauncher
             {
                 MessageBox.Show("error: "+error.Message);
             }
-            
+            logadd("Save.dat Saved for fast and secured login");
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -294,6 +329,7 @@ namespace SavedLauncher
             foreach (string word in changer)
             {
                 server = word;
+                logadd("Server name found");
                 return;
             }
             
@@ -302,6 +338,32 @@ namespace SavedLauncher
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             System.Diagnostics.Process.Start("https://github.com/Groophy-Lifefor/SavedLauncher");
+        }
+
+        private void logshow_Click(object sender, EventArgs e)
+        {
+            Form1 frm = new Form1();
+            Point hal1 = new Point(349, 330);
+            Point hal2 = new Point(580, 330);
+            
+            if (logopen == false)
+            {
+                this.Size = new Size(hal2);
+                logopen = true;
+                logadd("log box opened");
+            }
+            else if (logopen == true)
+            {
+                this.Size = new Size(hal1);
+                logopen = false;
+                logadd("log box closed");
+            }
+        }
+
+        private void logadd(string input)
+        {
+            logbox.Text = input + Environment.NewLine + logbox.Text;
+            return;
         }
 
 
